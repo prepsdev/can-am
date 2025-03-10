@@ -43,14 +43,50 @@
                         </li>
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                            <span class="hide-menu">TRANSACTION</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('admin.customer.index') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-settings"></i>
+                                </span>
+                                <span class="hide-menu">Service</span>
+                            </a>
+                        </li>
+                        <li class="nav-small-cap">
+                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">DATA</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('admin.dealer.index') }}" aria-expanded="false">
+                            <a class="sidebar-link" href="{{ route('admin.customer.index') }}" aria-expanded="false">
                                 <span>
-                                    <i class="ti ti-article"></i>
+                                    <i class="ti ti-user"></i>
                                 </span>
-                                <span class="hide-menu">Dealer</span>
+                                <span class="hide-menu">Customer</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('admin.vehicle.index') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-car"></i>
+                                </span>
+                                <span class="hide-menu">Vehicle</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('admin.mechanic.index') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-users"></i>
+                                </span>
+                                <span class="hide-menu">Mechanic</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('admin.product.index') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-box"></i>
+                                </span>
+                                <span class="hide-menu">Product</span>
                             </a>
                         </li>
                     </ul>
@@ -119,6 +155,16 @@
     <script src="{{ asset('js/sidebarmenu.js') }}"></script>
     <script src="{{ asset('js/app.min.js') }}"></script>
     @stack('scripts')
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                title: "Success!",
+                text: "{{ session('success') }}",
+                icon: "success",
+                showConfirmButton: true
+            });
+        @endif
+    </script>
 </body>
 
 </html>

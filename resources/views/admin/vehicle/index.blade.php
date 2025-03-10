@@ -6,13 +6,13 @@
             <div class="card-body px-4 py-3">
                 <div class="row align-items-center">
                     <div class="col-9">
-                        <h4 class="fw-semibold mb-8">Dealer</h4>
+                        <h4 class="fw-semibold mb-8">Vehicle</h4>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">
                                     <a class="text-muted text-decoration-none">Data</a>
                                 </li>
-                                <li class="breadcrumb-item" aria-current="page">Dealer</li>
+                                <li class="breadcrumb-item" aria-current="page">Vehicle</li>
                             </ol>
                         </nav>
                     </div>
@@ -28,8 +28,8 @@
         <div class="widget-content searchable-container list">
 
             <div class="col-md-12 col-xl-12 text-start d-flex justify-content-md-start justify-content-center my-3 mt-md-0">
-                <a href="{{ route('admin.dealer.create') }}"class="btn btn-primary d-flex align-items-center">
-                    <i class="ti ti-building text-white me-1 fs-5"></i> Add Data
+                <a href="{{ route('admin.vehicle.create') }}"class="btn btn-primary d-flex align-items-center">
+                    <i class="ti ti-car text-white me-1 fs-5"></i> Add Data
                 </a>
             </div>
             <div class="card card-body shadow-lg">
@@ -38,9 +38,9 @@
                         <thead class="header-item">
                             <tr>
                                 <th>No</th>
-                                <th>Name</th>
-                                <th>City</th>
-                                <th>Address</th>
+                                <th>Owner</th>
+                                <th>VIN</th>
+                                <th>Type</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -53,16 +53,17 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 @endpush
 @push('scripts')
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            $('#dataTable').DataTable({
+            let table = $('#dataTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.dealer.getData') }}",
+                ajax: "{{ route('admin.vehicle.getData') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -70,16 +71,16 @@
                         searchable: false
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'owner',
+                        name: 'owner'
                     },
                     {
-                        data: 'city',
-                        name: 'city'
+                        data: 'vin',
+                        name: 'vin'
                     },
                     {
-                        data: 'address',
-                        name: 'address'
+                        data: 'type',
+                        name: 'type'
                     },
                     {
                         data: 'action',
@@ -89,26 +90,38 @@
                     }
                 ]
             });
-        });
-    </script>
-    <script>
-        function deleteDealer(id) {
-            if (confirm("Are you sure you want to delete this dealer?")) {
-                $.ajax({
-                    url: "' . route('admin.dealer.delete', '') . '/" + id,
-                    type: "DELETE",
-                    data: {
-                        _token: "' . csrf_token() . '"
-                    },
-                    success: function(response) {
-                        alert("Dealer deleted successfully!");
-                        location.reload();
-                    },
-                    error: function(response) {
-                        alert("An error occurred while deleting the dealer.");
+
+            $(document).on('click', '.btn-delete', function() {
+                let id = $(this).data('id');
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "This action cannot be undone!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/admin/vehicle/" + id,
+                            type: "DELETE",
+                            data: {
+                                "_token": "{{ csrf_token() }}"
+                            },
+                            success: function(response) {
+                                Swal.fire("Deleted!", "Data has been deleted.",
+                                    "success");
+                                table.ajax.reload();
+                            },
+                            error: function() {
+                                Swal.fire("Error!", "Something went wrong.", "error");
+                            }
+                        });
                     }
                 });
-            }
-        }
+            });
+        });
     </script>
 @endpush

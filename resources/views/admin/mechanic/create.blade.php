@@ -13,7 +13,7 @@
                                     <a class="text-muted text-decoration-none">Data</a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a class="text-muted text-decoration-none">Dealer</a>
+                                    <a class="text-muted text-decoration-none">Mechanic</a>
                                 </li>
                                 <li class="breadcrumb-item" aria-current="page">Create</li>
                             </ol>
@@ -30,13 +30,43 @@
         </div>
         <div class="card">
             <div class="card-body shadow-lg">
-                <form action="{{ route('admin.dealer.store') }}" method="POST">
+                <form action="{{ route('admin.mechanic.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-label">Dealer Name</label>
-                                <input type="text" name="name" class="form-control" placeholder="Enter Dealer Name"
+                                <label class="form-label">Username</label>
+                                <input type="text" name="username" class="form-control" placeholder="Enter Username"
+                                    value="{{ old('username') }}" autocomplete="off">
+                                @error('username')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password" class="form-control" placeholder="Enter Password"
+                                    autocomplete="off">
+                                @error('password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" name="password_confirmation" class="form-control"
+                                    placeholder="Confirm Password" autocomplete="off">
+                                @error('password_confirmation')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Fullname</label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter Fullname"
                                     value="{{ old('name') }}" autocomplete="off">
                                 @error('name')
                                     <small class="text-danger">{{ $message }}</small>
@@ -45,19 +75,10 @@
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-label">City</label>
-                                <input type="text" name="city" class="form-control" placeholder="Enter City"
-                                    value="{{ old('city') }}" autocomplete="off">
-                                @error('city')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label class="form-label">Address</label>
-                                <textarea name="address" class="form-control" placeholder="Enter Address" rows="3" autocomplete="off">{{ old('address') }}</textarea>
-                                @error('address')
+                                <label class="form-label">Phone Number</label>
+                                <input type="text" name="phone" class="form-control" placeholder="Ex: 081234567890"
+                                    value="{{ old('phone') }}" autocomplete="off">
+                                @error('phone')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
