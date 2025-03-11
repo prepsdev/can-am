@@ -15,7 +15,7 @@ class MechanicController extends Controller
 
     public function getData()
     {
-        $data = User::orderBy('created_at', 'desc')->get();
+        $data = User::orderBy('created_at', 'desc')->where('role', 'mechanic')->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {

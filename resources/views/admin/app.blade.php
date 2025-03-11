@@ -19,8 +19,8 @@
             <!-- Sidebar scroll-->
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="./index.html" class="text-nowrap logo-img">
-                        <img src="images/logos/dark-logo.svg" width="180" alt="" />
+                    <a href="{{ route('admin.dashboard') }}" class="text-nowrap logo-img">
+                        <img src="{{ asset('images/logos/dark-logo.svg') }}" width="180" alt="" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -41,54 +41,58 @@
                                 <span class="hide-menu">Dashboard</span>
                             </a>
                         </li>
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">TRANSACTION</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('admin.customer.index') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-settings"></i>
-                                </span>
-                                <span class="hide-menu">Service</span>
-                            </a>
-                        </li>
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">DATA</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('admin.customer.index') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-user"></i>
-                                </span>
-                                <span class="hide-menu">Customer</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('admin.vehicle.index') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-car"></i>
-                                </span>
-                                <span class="hide-menu">Vehicle</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('admin.mechanic.index') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-users"></i>
-                                </span>
-                                <span class="hide-menu">Mechanic</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('admin.product.index') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-box"></i>
-                                </span>
-                                <span class="hide-menu">Product</span>
-                            </a>
-                        </li>
+                        @if (Auth::user()->role == 'admin')
+                            <li class="nav-small-cap">
+                                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span class="hide-menu">TRANSACTION</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('admin.service.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-settings"></i>
+                                    </span>
+                                    <span class="hide-menu">Service</span>
+                                </a>
+                            </li>
+                            <li class="nav-small-cap">
+                                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span class="hide-menu">DATA</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('admin.customer.index') }}"
+                                    aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-user"></i>
+                                    </span>
+                                    <span class="hide-menu">Customer</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('admin.vehicle.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-car"></i>
+                                    </span>
+                                    <span class="hide-menu">Vehicle</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('admin.mechanic.index') }}"
+                                    aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-users"></i>
+                                    </span>
+                                    <span class="hide-menu">Mechanic</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('admin.product.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-box"></i>
+                                    </span>
+                                    <span class="hide-menu">Product</span>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -126,13 +130,18 @@
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                                     aria-labelledby="drop2">
                                     <div class="message-body">
-                                        <a href="javascript:void(0)"
+                                        <a href="{{ route('admin.profile.edit') }}"
                                             class="d-flex align-items-center gap-2 dropdown-item">
                                             <i class="ti ti-user fs-6"></i>
                                             <p class="mb-0 fs-3">My Profile</p>
                                         </a>
-                                        <a href="./authentication-login.html"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="btn btn-outline-primary mx-3 mt-2 d-block">
+                                                Logout
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </li>
