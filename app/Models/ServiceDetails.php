@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceDetails extends Model
 {
     protected $fillable = [
+        'service_id',
         'customer_id',
         'vehicle_id',
         'oli_mesin',
@@ -20,6 +21,11 @@ class ServiceDetails extends Model
         'filter_oli',
         'information',
     ];
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 
     public function customer()
     {

@@ -36,13 +36,13 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label class="form-label">Customer</label>
-                                <select name="owner_id" class="form-control">
+                                <select name="customer_id" class="form-control">
                                     <option value="">Select Customer</option>
                                     @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('owner_id')
+                                @error('customer_id')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>

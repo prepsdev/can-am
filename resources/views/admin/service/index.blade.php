@@ -41,6 +41,8 @@
                                 <th>Customer</th>
                                 <th>Service Type</th>
                                 <th>Schedule Date</th>
+                                <th>Total Price</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -81,6 +83,14 @@
                     {
                         data: 'schedule_date',
                         name: 'schedule_date'
+                    },
+                    {
+                        data: 'price',
+                        name: 'price'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'action',

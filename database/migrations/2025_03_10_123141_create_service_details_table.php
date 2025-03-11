@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('service_details', function (Blueprint $table) {
             $table->id();
+            $table->string('service_id');
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('vehicle_id');
             $table->string('oli_mesin')->nullable();
@@ -24,7 +25,10 @@ return new class extends Migration
             $table->string('busi')->nullable();
             $table->string('o_ring_filter')->nullable();
             $table->string('filter_oli')->nullable();
-            $table->longText('information');
+            $table->longText('information')->nullable();
+            $table->bigInteger('jasa')->nullable();
+            $table->bigInteger('sparepart')->nullable();
+            $table->bigInteger('aksesoris')->nullable();
             $table->timestamps();
         });
     }

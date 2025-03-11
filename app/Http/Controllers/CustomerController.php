@@ -37,6 +37,7 @@ class CustomerController extends Controller
             'name' => 'required',
             'city' => 'required',
             'address' => 'required',
+            'phone' => 'required|numeric|min:10',
         ]);
 
         Customer::create($request->all());
@@ -64,6 +65,7 @@ class CustomerController extends Controller
             'name' => 'required',
             'city' => 'required',
             'address' => 'required',
+            'phone' => 'required|numeric|min:10',
         ]);
 
         Customer::find($id)->update($request->all());

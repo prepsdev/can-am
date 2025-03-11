@@ -23,11 +23,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/service/getData', [ServiceController::class, 'getData'])->name('admin.service.getData');
     Route::get('/admin/service/create', [ServiceController::class, 'create'])->name('admin.service.create');
     Route::post('/admin/service/store', [ServiceController::class, 'store'])->name('admin.service.store');
-    Route::get('/admin/service/create/detail/{id}', [ServiceController::class, 'createDetail'])->name('admin.service.create.detail');
-    Route::post('/admin/service/store/detail/{id}', [ServiceController::class, 'storeDetail'])->name('admin.service.store.detail');
+    Route::get('/admin/service/detail/{id}', [ServiceController::class, 'detail'])->name('admin.service.detail');
     Route::delete('/admin/service/{id}', [ServiceController::class, 'destroy'])->name('admin.service.destroy');
     Route::get('/admin/service/edit/{id}', [ServiceController::class, 'edit'])->name('admin.service.edit');
     Route::post('/admin/service/update/{id}', [ServiceController::class, 'update'])->name('admin.service.update');
+    Route::post('/admin/service/addInformation/{id}', [ServiceController::class, 'addInformation'])->name('admin.service.addInformation');
+    Route::post('/admin/service/selectMechanic/{id}', [ServiceController::class, 'selectMechanic'])->name('admin.service.selectMechanic');
+    Route::post('/admin/service/storeDetail/{id}', [ServiceController::class, 'storeDetail'])->name('admin.service.storeDetail');
+    Route::delete('/admin/service/deleteDetail/{id}', [ServiceController::class, 'deleteDetail'])->name('admin.service.deleteDetail');
+    Route::post('/admin/service/onmywayService/{id}', [ServiceController::class, 'onmywayService'])->name('admin.service.onmywayService');
+    Route::post('/admin/service/estimateService/{id}', [ServiceController::class, 'estimateService'])->name('admin.service.estimateService');
+    Route::post('/admin/service/startService/{id}', [ServiceController::class, 'startService'])->name('admin.service.startService');
+    Route::post('/admin/service/finalService/{id}', [ServiceController::class, 'finalService'])->name('admin.service.finalService');
+    Route::post('/admin/service/finishService/{id}', [ServiceController::class, 'finishService'])->name('admin.service.finishService');
+
 
     Route::get('/admin/customer', [CustomerController::class, 'index'])->name('admin.customer.index');
     Route::get('/admin/customer/getData', [CustomerController::class, 'getData'])->name('admin.customer.getData');

@@ -39,6 +39,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
+                                <th>Phone Number</th>
                                 <th>City</th>
                                 <th>Address</th>
                                 <th>Action</th>
@@ -73,6 +74,10 @@
                     {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'phone',
+                        name: 'phone'
                     },
                     {
                         data: 'city',

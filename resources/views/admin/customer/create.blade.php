@@ -45,6 +45,16 @@
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="text" name="phone" class="form-control" placeholder="Enter Phone Number"
+                                    value="{{ old('phone') }}" autocomplete="off">
+                                @error('phone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
                                 <label class="form-label">City</label>
                                 <input type="text" name="city" class="form-control" placeholder="Enter City"
                                     value="{{ old('city') }}" autocomplete="off">

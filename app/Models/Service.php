@@ -11,11 +11,21 @@ class Service extends Model
         'customer_id',
         'service_type',
         'schedule_date',
+        'mechanic_id',
+        'status',
+        'jasa',
+        'sparepart',
+        'aksesoris'
     ];
 
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function mechanic()
+    {
+        return $this->belongsTo(User::class, 'mechanic_id')->where('role', 'mechanic');
     }
 
     protected static function boot()
@@ -28,4 +38,8 @@ class Service extends Model
             $service->service_id = 'SRV-' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
         });
     }
+
+    protected $casts = [
+        'schedule_date' => 'date',
+    ];
 }

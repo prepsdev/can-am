@@ -35,30 +35,37 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-label">Username</label>
-                                <input type="text" name="name" class="form-control" placeholder="Enter Fullname"
-                                    value="{{ $data->username }}" autocomplete="off" disabled>
-                                @error('name')
+                                <label class="form-label">Owner</label>
+                                <select name="owner_id" class="form-control">
+                                    <option value="">Select Owner</option>
+                                    @foreach ($customers as $customer)
+                                        <option value="{{ $customer->id }}"
+                                            {{ $customer->id == $data->customer_id ? 'selected' : '' }}>
+                                            {{ $customer->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('owner_id')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-label">Fullname</label>
-                                <input type="text" name="name" class="form-control" placeholder="Enter Fullname"
-                                    value="{{ $data->name }}" autocomplete="off">
-                                @error('name')
+                                <label class="form-label">VIN</label>
+                                <input type="text" name="vin" class="form-control" placeholder="Enter VIN"
+                                    value="{{ $data->vin }}" autocomplete="off">
+                                @error('vin')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-label">Phone Number</label>
-                                <input type="text" name="phone" class="form-control" placeholder="Ex: 081234567890"
-                                    value="{{ $data->phone }}" autocomplete="off">
-                                @error('phone')
+                                <label class="form-label">Type</label>
+                                <input type="text" name="type" class="form-control" placeholder="Enter Car Type"
+                                    value="{{ $data->type }}" autocomplete="off">
+                                @error('type')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -68,7 +75,7 @@
                                 <div class="ms-auto mt-3 mt-md-0">
                                     <button type="submit" class="btn btn-primary hstack gap-6">
                                         <i class="ti ti-send fs-4"></i>
-                                        Update
+                                        Submit
                                     </button>
                                 </div>
                             </div>

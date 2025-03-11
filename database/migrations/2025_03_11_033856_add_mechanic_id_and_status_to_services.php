@@ -11,21 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('city')->nullable();
-            $table->longText('address');
-            $table->string('phone')->nullable();
-            $table->timestamps();
+        Schema::table('services', function (Blueprint $table) {
+            $table->unsignedBigInteger('mechanic_id')->nullable()->after('service_id');
+            $table->string('status')->default('Mechanic Unassigned')->after('schedule_date');
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('dealers');
+        Schema::table('services', function (Blueprint $table) {
+            //
+        });
     }
 };

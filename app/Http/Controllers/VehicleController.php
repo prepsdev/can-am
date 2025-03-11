@@ -64,18 +64,19 @@ class VehicleController extends Controller
     public function edit($id)
     {
         $data = Vehicle::find($id);
-        return view('admin.vehicle.edit', compact('data'));
+        $customers = Customer::all();
+        return view('admin.vehicle.edit', compact('data', 'customers'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required',
-            'city' => 'required',
-            'address' => 'required',
+            'customer_id' => 'required',
+            'vin' => 'required',
+            'type' => 'required',
         ]);
 
         Vehicle::find($id)->update($request->all());
-        return redirect()->route('admin.vehicle.index');
+        return redirect()->route('admin.vehicle.index')->with('success', 'Vehicle updated successfully.');;
     }
 }
