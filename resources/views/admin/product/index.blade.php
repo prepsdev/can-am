@@ -41,6 +41,7 @@
                                 <th>Type</th>
                                 <th>Code</th>
                                 <th>Name</th>
+                                <th>Price</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -81,6 +82,10 @@
                     {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'price',
+                        name: 'price'
                     },
                     {
                         data: 'action',

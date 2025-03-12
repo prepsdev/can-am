@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Service;
+use App\Models\ServiceDetailAccecories;
 use App\Models\ServiceDetails;
 use App\Models\ServiceTrackers;
 use App\Models\User;
 use App\Models\Vehicle;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -30,6 +32,7 @@ class ServiceController extends Controller
                     $buttons .= ' <a href="' . route('admin.service.edit', $data->id) . '" class="btn btn-sm btn-primary">Edit</a> 
                                   <button class="btn btn-sm btn-danger btn-delete" data-id="' . $data->id . '">Delete</button>';
                 }
+
                 return $buttons;
             })
             ->editColumn('owner', function ($data) {
@@ -51,8 +54,38 @@ class ServiceController extends Controller
                 $total = ($data->jasa ?? 0) + ($data->sparepart ?? 0) + ($data->aksesoris ?? 0);
                 return 'Rp ' . number_format($total, 0, ',', '.');
             })
+            ->editColumn('time', function ($data) {
+                if ($data->status == "Finished") {
+                    $tracker = ServiceTrackers::where('service_id', $data->service_id)->first();
+                    $progress = Carbon::parse($tracker->progress);
+                    $check = Carbon::parse($tracker->check);
+
+                    $time = $progress->diff($check);
+                    return $time;
+                } else {
+                    return "Not Finished Yet";
+                }
+            })
             ->rawColumns(['action', 'status'])
             ->make(true);
+    }
+
+    public function getServiceTotal($id)
+    {
+        $serviceDetails = ServiceDetails::where('id', $id)->first();
+
+        $totalPrice = 0;
+        $totalPrice += optional($serviceDetails->oliMesin)->price ?? 0;
+        $totalPrice += optional($serviceDetails->oliGardan)->price ?? 0;
+        $totalPrice += optional($serviceDetails->oliGearBox)->price ?? 0;
+        $totalPrice += optional($serviceDetails->breakCleaner)->price ?? 0;
+        $totalPrice += optional($serviceDetails->carbuCleaner)->price ?? 0;
+        $totalPrice += optional($serviceDetails->crushWasher)->price ?? 0;
+        $totalPrice += optional($serviceDetails->busi)->price ?? 0;
+        $totalPrice += optional($serviceDetails->oRingFilter)->price ?? 0;
+        $totalPrice += optional($serviceDetails->filterOli)->price ?? 0;
+
+        return response()->json(['total' => $totalPrice]);
     }
 
     public function create()
@@ -113,7 +146,7 @@ class ServiceController extends Controller
         $registeredVehicleIds = ServiceDetails::where('service_id', $id)->pluck('vehicle_id')->toArray();
 
         $service = Service::where('service_id', $id)->first();
-        $servicedetails = ServiceDetails::where('service_id', $id)->get();
+        $servicedetails = ServiceDetails::where('service_id', $id)->orderBy('created_at', 'desc')->get();
         $vehicles = Vehicle::where('customer_id', $service->customer_id)
             ->whereNotIn('id', $registeredVehicleIds)
             ->get();
@@ -128,13 +161,15 @@ class ServiceController extends Controller
         $busi = Product::where('type', 'Busi')->get();
         $o_ring_filter = Product::where('type', 'O Ring Filter')->get();
         $filter_oli = Product::where('type', 'Filter Oli')->get();
+        $acc = Product::where('type', 'Aksesoris')->get();
         $tracker = ServiceTrackers::where('service_id', $id)->first();
-        return view('admin.service.detail', compact('service', 'servicedetails', 'mechanics', 'curr', 'vehicles', 'oli_mesin', 'oli_gardan', 'oli_gear_box', 'break_cleaner', 'carbu_cleaner', 'crush_washer', 'busi', 'o_ring_filter', 'filter_oli', 'tracker'));
+
+        return view('admin.service.detail', compact('service', 'servicedetails', 'mechanics', 'curr', 'vehicles', 'oli_mesin', 'oli_gardan', 'oli_gear_box', 'break_cleaner', 'carbu_cleaner', 'crush_washer', 'busi', 'o_ring_filter', 'filter_oli', 'acc', 'tracker'));
     }
 
     public function selectMechanic(Request $request, $id)
     {
-        $data = Service::where('service_id', $id)->firstOrFail();;
+        $data = Service::where('service_id', $id)->firstOrFail();
         $data->update([
             'mechanic_id' => $request->mechanic_id,
             'status' => 'Waiting Mechanic',
@@ -159,7 +194,7 @@ class ServiceController extends Controller
             'vehicle_id' => 'required',
         ]);
 
-        ServiceDetails::create([
+        $serviceDetail = ServiceDetails::create([
             'service_id' => $id,
             'customer_id' => Service::where('service_id', $id)->first()->customer_id,
             'vehicle_id' => $request->vehicle_id,
@@ -175,6 +210,15 @@ class ServiceController extends Controller
             'information' => $request->information ?: null,
         ]);
 
+        if ($request->has('acc') && is_array($request->acc)) {
+            foreach ($request->acc as $productId) {
+                ServiceDetailAccecories::create([
+                    'service_detail_id' => $serviceDetail->id,
+                    'product_id' => $productId,
+                ]);
+            }
+        }
+
         return redirect()->route('admin.service.detail', ['id' => $id])->with('success', 'Service details added successfully.');
     }
 
@@ -184,12 +228,14 @@ class ServiceController extends Controller
         $move = $serviceDetail->service_id;
         $serviceDetail->delete();
 
+        ServiceDetailAccecories::where('service_detail_id', $id)->delete();
+
         return redirect()->route('admin.service.detail', ['id' => $move])->with('success', 'Service detail deleted successfully.');
     }
 
     public function onmywayService($serviceId)
     {
-        $service = Service::where('service_id', $serviceId)->firstOrFail();;
+        $service = Service::where('service_id', $serviceId)->firstOrFail();
 
         $service->status = 'On Progress - On My Way';
         $service->save();
@@ -204,7 +250,7 @@ class ServiceController extends Controller
 
     public function estimateService($serviceId)
     {
-        $service = Service::where('service_id', $serviceId)->firstOrFail();;
+        $service = Service::where('service_id', $serviceId)->firstOrFail();
 
         $service->status = 'On Progress - Arrived';
         $service->save();
@@ -219,7 +265,7 @@ class ServiceController extends Controller
 
     public function startService($serviceId)
     {
-        $service = Service::where('service_id', $serviceId)->firstOrFail();;
+        $service = Service::where('service_id', $serviceId)->firstOrFail();
 
         $service->status = 'On Progress - Fixing';
         $service->save();
@@ -234,7 +280,7 @@ class ServiceController extends Controller
 
     public function finalService($serviceId)
     {
-        $service = Service::where('service_id', $serviceId)->firstOrFail();;
+        $service = Service::where('service_id', $serviceId)->firstOrFail();
 
         $service->status = 'On Progress - Final Check';
         $service->save();
@@ -249,7 +295,7 @@ class ServiceController extends Controller
 
     public function finishService($serviceId)
     {
-        $service = Service::where('service_id', $serviceId)->firstOrFail();;
+        $service = Service::where('service_id', $serviceId)->firstOrFail();
 
         $service->status = 'Finished';
         $service->save();
@@ -260,5 +306,26 @@ class ServiceController extends Controller
         $tracker->save();
 
         return redirect()->route('admin.service.detail', ['id' => $serviceId])->with('success', 'Service has been finished successfully.');
+    }
+
+    public function payService(Request $request, $id)
+    {
+        $request->validate([
+            'jasa' => 'required',
+            'sparepart' => 'required',
+            'aksesoris' => 'required'
+        ]);
+
+        $price_jasa = str_replace('.', '', str_replace('Rp ', '', $request->jasa));
+        $price_aksesoris = str_replace('.', '', str_replace('Rp ', '', $request->aksesoris));
+
+        $data = ServiceDetails::findOrFail($id);
+        $data->update([
+            'jasa'  => $price_jasa,
+            'sparepart' => $request->sparepart,
+            'aksesoris' => $price_aksesoris,
+        ]);
+
+        return redirect()->back()->with('success', 'Payment has been processed.');
     }
 }

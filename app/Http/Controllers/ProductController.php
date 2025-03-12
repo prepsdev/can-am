@@ -22,6 +22,9 @@ class ProductController extends Controller
                 return '<a href="' . route('admin.product.edit', $data->id) . '" class="btn btn-sm btn-primary">Edit</a> 
                         <button class="btn btn-sm btn-danger btn-delete" data-id="' . $data->id . '">Delete</button>';
             })
+            ->editColumn('price', function ($data) {
+                return 'Rp ' . number_format($data->price, 0, ',', '.');
+            })
             ->rawColumns(['action'])
             ->make(true);
     }
@@ -36,10 +39,18 @@ class ProductController extends Controller
         $request->validate([
             'code' => 'required|unique:products',
             'type' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'price' => 'required'
         ]);
 
-        Product::create($request->all());
+        $price = str_replace('.', '', str_replace('Rp ', '', $request->price));
+
+        Product::create([
+            'code' => $request->code,
+            'type' => $request->type,
+            'name' => $request->name,
+            'price' => $price
+        ]);
         return redirect()->route('admin.product.index')->with('success', 'Product added successfully.');
     }
 
@@ -61,12 +72,20 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'code' => 'required|unique:products',
+            'code' => 'required|unique:products,code,' . $id,
             'type' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'price' => 'required'
         ]);
 
-        Product::find($id)->update($request->all());
-        return redirect()->route('admin.product.index');
+        $price = str_replace('.', '', str_replace('Rp ', '', $request->price));
+
+        Product::findOrFail($id)->update([
+            'code' => $request->code,
+            'type' => $request->type,
+            'name' => $request->name,
+            'price' => $price
+        ]);
+        return redirect()->route('admin.product.index')->with('success', 'Product updated successfully.');
     }
 }

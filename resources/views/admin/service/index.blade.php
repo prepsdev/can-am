@@ -43,6 +43,7 @@
                                 <th>Schedule Date</th>
                                 <th>Total Price</th>
                                 <th>Status</th>
+                                <th>Time Spent</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -91,6 +92,10 @@
                     {
                         data: 'status',
                         name: 'status'
+                    },
+                    {
+                        data: 'time',
+                        name: 'time'
                     },
                     {
                         data: 'action',

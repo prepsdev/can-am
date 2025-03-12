@@ -30,23 +30,55 @@
         </div>
         <div class="card">
             <div class="card-body shadow-lg">
-                <form action="{{ route('admin.vehicle.update', $data->id) }}" method="POST">
+                <form action="{{ route('admin.product.update', $data->id) }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-label">Username</label>
-                                <input type="text" name="name" class="form-control" placeholder="Enter Fullname"
-                                    value="{{ $data->username }}" autocomplete="off" disabled>
-                                @error('name')
+                                <label class="form-label">Product Type</label>
+                                <select name="type" class="form-control">
+                                    <option value="">Select Product Type</option>
+                                    <option value="Oli Mesin" {{ $data->type == 'Oli Mesin' ? 'selected' : '' }}>Oli Mesin
+                                    </option>
+                                    <option value="Oli Gardan" {{ $data->type == 'Oli Gardan' ? 'selected' : '' }}>Oli
+                                        Gardan
+                                    </option>
+                                    <option value="Oli Gear Box" {{ $data->type == 'Oli Gear Box' ? 'selected' : '' }}>Oli
+                                        Gear Box</option>
+                                    <option value="Break Cleaner" {{ $data->type == 'Break Cleaner' ? 'selected' : '' }}>
+                                        Break Cleaner</option>
+                                    <option value="Carbu Cleaner" {{ $data->type == 'Carbu Cleaner' ? 'selected' : '' }}>
+                                        Carbu Cleaner</option>
+                                    <option value="Crush Washer" {{ $data->type == 'Crush Washer' ? 'selected' : '' }}>Crush
+                                        Washer</option>
+                                    <option value="Busi" {{ $data->type == 'Busi' ? 'selected' : '' }}>Busi</option>
+                                    <option value="O Ring Filter" {{ $data->type == 'O Ring Filter' ? 'selected' : '' }}>
+                                        O Ring Filter</option>
+                                    <option value="Filter Oli" {{ $data->type == 'Filter Oli' ? 'selected' : '' }}>Filter
+                                        Oli
+                                    </option>
+                                    <option value="Aksesoris" {{ $data->type == 'Aksesoris' ? 'selected' : '' }}>Aksesoris
+                                    </option>
+                                </select>
+                                @error('type')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-label">Fullname</label>
-                                <input type="text" name="name" class="form-control" placeholder="Enter Fullname"
+                                <label class="form-label">Product Code</label>
+                                <input type="text" name="code" class="form-control" placeholder="Enter Product Code"
+                                    value="{{ $data->code }}" autocomplete="off">
+                                @error('code')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Product Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter Product Name"
                                     value="{{ $data->name }}" autocomplete="off">
                                 @error('name')
                                     <small class="text-danger">{{ $message }}</small>
@@ -55,10 +87,11 @@
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
-                                <label class="form-label">Phone Number</label>
-                                <input type="text" name="phone" class="form-control" placeholder="Ex: 081234567890"
-                                    value="{{ $data->phone }}" autocomplete="off">
-                                @error('phone')
+                                <label class="form-label">Price</label>
+                                <input type="text" name="price" class="form-control" placeholder="Enter Price"
+                                    value="{{ 'Rp ' . number_format($data->price, 0, ',', '.') }}" autocomplete="off"
+                                    id="price" oninput="formatPrice(this)">
+                                @error('price')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -83,4 +116,11 @@
 @push('styles')
 @endpush
 @push('scripts')
+    <script>
+        function formatPrice(input) {
+            let value = input.value.replace(/\D/g, ""); // Hapus semua non-digit
+            let formattedValue = new Intl.NumberFormat('id-ID').format(value); // Format dengan titik (.)
+            input.value = 'Rp ' + formattedValue;
+        }
+    </script>
 @endpush

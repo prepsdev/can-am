@@ -132,7 +132,7 @@
                                                 <td>{{ \Carbon\Carbon::parse($row->schedule_date)->format('d M Y') }}</td>
                                                 <td>{{ $row->status }}</td>
                                                 <td><a href="{{ route('admin.service.detail', $row->service_id) }}"
-                                                        class="btn btn-primary">Button</a></td>
+                                                        class="btn btn-primary">Detail</a></td>
                                             </tr>
                                         @endforeach
                                     </thead>

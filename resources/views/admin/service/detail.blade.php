@@ -42,12 +42,11 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Select Vehicle</label>
-                                            <select name="vehicle_id" class="form-control">
+                                            <select name="vehicle_id" id="vehicle_id" class="form-select select2">
                                                 <option value="">Select Vehicle</option>
                                                 @foreach ($vehicles as $vehicle)
                                                     <option value="{{ $vehicle->id }}">{{ $vehicle->type }} -
-                                                        {{ $vehicle->vin }}
-                                                    </option>
+                                                        {{ $vehicle->vin }}</option>
                                                 @endforeach
                                             </select>
                                             @error('vehicle_id')
@@ -58,7 +57,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Oli Mesin</label>
-                                            <select name="oli_mesin" class="form-control">
+                                            <select name="oli_mesin" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($oli_mesin as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -69,7 +68,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Oli Gardan</label>
-                                            <select name="oli_gardan" class="form-control">
+                                            <select name="oli_gardan" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($oli_gardan as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -80,7 +79,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Oli Gear Box</label>
-                                            <select name="oli_gear_box" class="form-control">
+                                            <select name="oli_gear_box" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($oli_gear_box as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -91,7 +90,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Break Cleaner</label>
-                                            <select name="break_cleaner" class="form-control">
+                                            <select name="break_cleaner" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($break_cleaner as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -102,7 +101,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Carbu Cleaner</label>
-                                            <select name="carbu_cleaner" class="form-control">
+                                            <select name="carbu_cleaner" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($carbu_cleaner as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -113,7 +112,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Crush Washer</label>
-                                            <select name="crush_washer" class="form-control">
+                                            <select name="crush_washer" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($crush_washer as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -124,7 +123,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Busi</label>
-                                            <select name="busi" class="form-control">
+                                            <select name="busi" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($busi as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -135,7 +134,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">O Ring Filter</label>
-                                            <select name="o_ring_filter" class="form-control">
+                                            <select name="o_ring_filter" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($o_ring_filter as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -146,9 +145,20 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Filter Oli</label>
-                                            <select name="filter_oli" class="form-control">
+                                            <select name="filter_oli" class="form-select select2">
                                                 <option value="">-</option>
                                                 @foreach ($filter_oli as $row)
+                                                    <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Accessories</label>
+                                            <select name="acc[]" class="form-select select2" multiple="multiple">
+                                                <option value="">-</option>
+                                                @foreach ($acc as $row)
                                                     <option value="{{ $row->id }}">{{ $row->name }}</option>
                                                 @endforeach
                                             </select>
@@ -409,6 +419,9 @@
                                     <th class="fs-4 fw-semibold mb-0">No</th>
                                     <th class="fs-4 fw-semibold mb-0">VIN</th>
                                     <th class="fs-4 fw-semibold mb-0">Vehicle Type</th>
+                                    <th class="fs-4 fw-semibold mb-0">Sparepart</th>
+                                    <th class="fs-4 fw-semibold mb-0">Jasa</th>
+                                    <th class="fs-4 fw-semibold mb-0">Accessories</th>
                                     <th class="fs-4 fw-semibold mb-0">Action</th>
                                 </tr>
                             </thead>
@@ -424,6 +437,9 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $row->vehicle->vin ?? 'N/A' }}</td>
                                         <td>{{ $row->vehicle->type ?? 'N/A' }}</td>
+                                        <td>Rp {{ number_format($row->total_sparepart, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($row->jasa, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($row->aksesoris, 0, ',', '.') }}</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#addInformationModal-{{ $row->id }}">
@@ -434,6 +450,13 @@
                                                 <button type="button" class="btn btn-sm btn-danger"
                                                     onclick="confirmDelete({{ $row->id }})">
                                                     <i class="ti ti-trash"></i> Delete
+                                                </button>
+                                            @endif
+
+                                            @if ($service->status == 'Finished')
+                                                <button type="button" class="btn btn-sm btn-info btn-pay"
+                                                    data-id="{{ $row->id }}" data-jasa="{{ $row->jasa }}">
+                                                    <i class="ti ti-cash-banknote"></i> Pay Service
                                                 </button>
                                             @endif
 
@@ -482,7 +505,7 @@
                                         </td>
                                     </tr>
                                     <tr class="collapse" id="detail-{{ $index }}">
-                                        <td colspan="5">
+                                        <td colspan="8">
                                             <div class="p-3">
                                                 @if (
                                                     $row->oli_mesin ||
@@ -495,44 +518,144 @@
                                                         $row->o_ring_filter ||
                                                         $row->filter_oli)
                                                     @if ($row->oli_mesin)
-                                                        <p><strong>Oli Mesin:</strong> {{ $row->oli_mesin }}</p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>Oli Mesin:</strong>
+                                                                {{ $row->oliMesin->code }} | {{ $row->oliMesin->name }}
+                                                            </div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->oliMesin->price, 0, ',', '.') }}
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                     @if ($row->oli_gardan)
-                                                        <p><strong>Oli Gardan:</strong> {{ $row->oli_gardan }}</p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>Oli Gardan:</strong>
+                                                                {{ $row->oliGardan->code }} | {{ $row->oliGardan->name }}
+                                                            </div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->oliGardan->price, 0, ',', '.') }}
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                     @if ($row->oli_gear_box)
-                                                        <p><strong>Oli Gear Box:</strong> {{ $row->oli_gear_box }}</p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>Oli Gear Box:</strong>
+                                                                {{ $row->oliGearBox->code }} |
+                                                                {{ $row->oliGearBox->name }}</div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->oliGearBox->price, 0, ',', '.') }}
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                     @if ($row->break_cleaner)
-                                                        <p><strong>Break Cleaner:</strong> {{ $row->break_cleaner }}
-                                                        </p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>Break Cleaner:</strong>
+                                                                {{ $row->breakCleaner->code }} |
+                                                                {{ $row->breakCleaner->name }}</div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->breakCleaner->price, 0, ',', '.') }}
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                     @if ($row->carbu_cleaner)
-                                                        <p><strong>Carbu Cleaner:</strong> {{ $row->carbu_cleaner }}
-                                                        </p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>Carbu Cleaner:</strong>
+                                                                {{ $row->carbuCleaner->code }} |
+                                                                {{ $row->carbuCleaner->name }}</div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->carbuCleaner->price, 0, ',', '.') }}
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                     @if ($row->crush_washer)
-                                                        <p><strong>Crush Washer:</strong> {{ $row->crush_washer }}</p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>Crush Washer:</strong>
+                                                                {{ $row->crushWasher->code }} |
+                                                                {{ $row->crushWasher->name }}</div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->crushWasher->price, 0, ',', '.') }}
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                     @if ($row->busi)
-                                                        <p><strong>Busi:</strong> {{ $row->busi }}</p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>Busi:</strong>
+                                                                {{ $row->Busi->code }} | {{ $row->Busi->name }}</div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->Busi->price, 0, ',', '.') }}</div>
+                                                        </div>
                                                     @endif
                                                     @if ($row->o_ring_filter)
-                                                        <p><strong>O Ring Filter:</strong> {{ $row->o_ring_filter }}
-                                                        </p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>O Ring Filter:</strong>
+                                                                {{ $row->oRingFilter->code }} |
+                                                                {{ $row->oRingFilter->name }}</div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->oRingFilter->price, 0, ',', '.') }}
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                     @if ($row->filter_oli)
-                                                        <p><strong>Filter Oli:</strong> {{ $row->filter_oli }}</p>
+                                                        <div class="row">
+                                                            <div class="col-6"><strong>Filter Oli:</strong>
+                                                                {{ $row->filterOli->code }} | {{ $row->filterOli->name }}
+                                                            </div>
+                                                            <div class="col-6 text-end">Rp
+                                                                {{ number_format($row->filterOli->price, 0, ',', '.') }}
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                 @else
                                                     <p>Tidak ada informasi tambahan produk</p>
                                                 @endif
+                                                <hr>
                                                 <p><b>Informasi Tambahan:</b><br>{{ $row->information }}</p>
+                                                <p><b>Informasi Sebelumnya:</b><br>
+                                                    {{ \App\Models\ServiceDetails::where('vehicle_id', $row->vehicle_id)->orderBy('created_at', 'desc')->skip(1)->value('information') ?? '-' }}
+                                                </p>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <div class="modal fade" id="payServiceModal" tabindex="-1"
+                                aria-labelledby="payServiceModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="payServiceModalLabel">Pay Service</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <form id="payServiceForm" method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Sparepart</label>
+                                                    <input type="text" name="sparepart_display" id="sparepart_display"
+                                                        class="form-control price-format" placeholder="Rp 0" readonly>
+                                                    <input type="hidden" name="sparepart" id="sparepart">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Jasa</label>
+                                                    <input type="text" name="jasa" id="jasa"
+                                                        class="form-control price-format" placeholder="Rp 0">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Aksesoris</label>
+                                                    <input type="text" name="aksesoris"
+                                                        class="form-control price-format" placeholder="Rp 0">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Pay</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </table>
                     </div>
                 </div>
@@ -543,6 +666,30 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <style>
+        .select2-selection__placeholder {
+            font-size: 0.875rem;
+            color: #5A6A85;
+        }
+
+        .select2-selection__rendered {
+            font-size: 0.875rem;
+            color: #5A6A85;
+        }
+
+        .select2-results__clear {
+            font-size: 0.875rem;
+            color: #5A6A85;
+        }
+
+        .select2-results__option {
+            font-size: 0.875rem;
+            color: #5A6A85;
+        }
+    </style>
 @endpush
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -643,5 +790,63 @@
                 }
             });
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                width: '100%',
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.price-format').on('input', function() {
+                let value = $(this).val().replace(/[^0-9]/g, '');
+                value = new Intl.NumberFormat('id-ID').format(value);
+                $(this).val('Rp ' + value);
+            });
+
+            $(document).on("click", ".btn-pay", function() {
+                let serviceId = $(this).data("id");
+                let jasa = $(this).data("jasa");
+                let formAction = "{{ route('admin.service.payService', ':id') }}".replace(":id",
+                    serviceId);
+
+                $("#payServiceForm").attr("action", formAction);
+
+                $.ajax({
+                    url: "/admin/service/getServiceTotal/" + serviceId,
+                    type: "GET",
+                    success: function(response) {
+                        console.log("Response JSON:", serviceId);
+
+                        if (response && response.total !== undefined) {
+                            let formattedPrice = new Intl.NumberFormat('id-ID').format(response
+                                .total);
+                            $("#sparepart_display").val("Rp " +
+                                formattedPrice);
+                            $("#sparepart").val(response
+                                .total);
+                            $("#jasa").val("Rp " + new Intl.NumberFormat('id-ID').format(jasa));
+                        } else {
+                            console.warn("Total price is undefined in response:", response);
+                            $("#sparepart_display").val("Rp 0");
+                            $("#sparepart").val(0);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", status, error);
+                        console.error("Response Text:", xhr.responseText);
+                    }
+                });
+
+                $("#payServiceModal").modal("show");
+            });
+        });
     </script>
 @endpush

@@ -57,6 +57,8 @@
                                     <option value="Filter Oli" {{ old('type') == 'Filter Oli' ? 'selected' : '' }}>Filter
                                         Oli
                                     </option>
+                                    <option value="Aksesoris" {{ old('type') == 'Aksesoris' ? 'selected' : '' }}>Aksesoris
+                                    </option>
                                 </select>
                                 @error('type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -83,6 +85,17 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Price</label>
+                                <input type="text" name="price" class="form-control" placeholder="Enter Price"
+                                    value="{{ old('price') }}" autocomplete="off" id="price"
+                                    oninput="formatPrice(this)">
+                                @error('price')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="col-12">
                             <div class="d-md-flex align-items-center">
                                 <div class="ms-auto mt-3 mt-md-0">
@@ -103,4 +116,11 @@
 @push('styles')
 @endpush
 @push('scripts')
+    <script>
+        function formatPrice(input) {
+            let value = input.value.replace(/\D/g, ""); // Hapus semua non-digit
+            let formattedValue = new Intl.NumberFormat('id-ID').format(value); // Format dengan titik (.)
+            input.value = 'Rp ' + formattedValue;
+        }
+    </script>
 @endpush

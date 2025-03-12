@@ -13,9 +13,6 @@ class Service extends Model
         'schedule_date',
         'mechanic_id',
         'status',
-        'jasa',
-        'sparepart',
-        'aksesoris'
     ];
 
     public function customer()

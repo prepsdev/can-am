@@ -36,7 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/service/startService/{id}', [ServiceController::class, 'startService'])->name('admin.service.startService');
     Route::post('/admin/service/finalService/{id}', [ServiceController::class, 'finalService'])->name('admin.service.finalService');
     Route::post('/admin/service/finishService/{id}', [ServiceController::class, 'finishService'])->name('admin.service.finishService');
-
+    Route::post('/admin/service/pay/{id}', [ServiceController::class, 'payService'])->name('admin.service.payService');
+    Route::get('/admin/service/getServiceTotal/{id}', [ServiceController::class, 'getServiceTotal'])->name('admin.service.getServiceTotal');
 
     Route::get('/admin/customer', [CustomerController::class, 'index'])->name('admin.customer.index');
     Route::get('/admin/customer/getData', [CustomerController::class, 'getData'])->name('admin.customer.getData');
