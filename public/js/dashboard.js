@@ -108,10 +108,14 @@ $(function () {
   // =====================================
   // Breakup
   // =====================================
-  var breakup = {
+  // Ambil data dari Laravel yang sudah diparsing
+var labels = graphData.map(item => item.name);
+var series = graphData.map(item => item.value);
+
+var breakup = {
     color: "#adb5bd",
-    series: [38, 40, 25],
-    labels: ["2022", "2021", "2020"],
+    series: series, // Data dari Laravel
+    labels: labels, // Label dari Laravel
     chart: {
       width: 180,
       type: "donut",
@@ -130,11 +134,9 @@ $(function () {
     stroke: {
       show: false,
     },
-
     dataLabels: {
       enabled: false,
     },
-
     legend: {
       show: false,
     },
@@ -154,10 +156,12 @@ $(function () {
       theme: "dark",
       fillSeriesColor: false,
     },
-  };
+};
 
-  var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
-  chart.render();
+// Render Chart
+var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
+chart.render();
+
 
 
 

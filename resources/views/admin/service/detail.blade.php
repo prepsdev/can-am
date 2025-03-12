@@ -439,7 +439,15 @@
                                         <td>{{ $row->vehicle->type ?? 'N/A' }}</td>
                                         <td>Rp {{ number_format($row->total_sparepart, 0, ',', '.') }}</td>
                                         <td>Rp {{ number_format($row->jasa, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($row->aksesoris, 0, ',', '.') }}</td>
+                                        @php
+                                            $total_accessories = 0;
+                                        @endphp
+                                        @foreach ($row->accessories as $acc)
+                                            @php
+                                                $total_accessories += $acc->product->price;
+                                            @endphp
+                                        @endforeach
+                                        <td>Rp {{ number_format($total_accessories, 0, ',', '.') }}</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
                                                 data-bs-target="#addInformationModal-{{ $row->id }}">
@@ -455,7 +463,7 @@
 
                                             @if ($service->status == 'Finished')
                                                 <button type="button" class="btn btn-sm btn-info btn-pay"
-                                                    data-id="{{ $row->id }}" data-jasa="{{ $row->jasa }}">
+                                                    data-id="{{ $row->id }}" data-acc="{{ $total_accessories }}">
                                                     <i class="ti ti-cash-banknote"></i> Pay Service
                                                 </button>
                                             @endif
@@ -608,6 +616,22 @@
                                                 @else
                                                     <p>Tidak ada informasi tambahan produk</p>
                                                 @endif
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <strong>Aksesoris:</strong>
+                                                    </div>
+                                                </div>
+                                                @foreach ($row->accessories as $acc)
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            {{ $acc->product->name }}
+                                                        </div>
+                                                        <div class="col-6 text-end">
+                                                            Rp {{ number_format($acc->product->price ?? 0, 0, ',', '.') }}
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+
                                                 <hr>
                                                 <p><b>Informasi Tambahan:</b><br>{{ $row->information }}</p>
                                                 <p><b>Informasi Sebelumnya:</b><br>
@@ -637,13 +661,14 @@
                                                     <input type="hidden" name="sparepart" id="sparepart">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label class="form-label">Jasa</label>
-                                                    <input type="text" name="jasa" id="jasa"
-                                                        class="form-control price-format" placeholder="Rp 0">
+                                                    <label class="form-label">Aksesoris</label>
+                                                    <input type="text" name="aksesoris_display" id="aksesoris_display"
+                                                        class="form-control price-format" placeholder="Rp 0" readonly>
+                                                    <input type="hidden" name="aksesoris" id="aksesoris">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label class="form-label">Aksesoris</label>
-                                                    <input type="text" name="aksesoris"
+                                                    <label class="form-label">Jasa</label>
+                                                    <input type="text" name="jasa" id="jasa"
                                                         class="form-control price-format" placeholder="Rp 0">
                                                 </div>
                                             </div>
@@ -813,30 +838,34 @@
 
             $(document).on("click", ".btn-pay", function() {
                 let serviceId = $(this).data("id");
-                let jasa = $(this).data("jasa");
+                let acc = $(this).data("acc") || 0;
+
                 let formAction = "{{ route('admin.service.payService', ':id') }}".replace(":id",
                     serviceId);
-
                 $("#payServiceForm").attr("action", formAction);
 
                 $.ajax({
                     url: "/admin/service/getServiceTotal/" + serviceId,
                     type: "GET",
                     success: function(response) {
-                        console.log("Response JSON:", serviceId);
+                        console.log("Response JSON:", response);
 
                         if (response && response.total !== undefined) {
                             let formattedPrice = new Intl.NumberFormat('id-ID').format(response
                                 .total);
-                            $("#sparepart_display").val("Rp " +
-                                formattedPrice);
-                            $("#sparepart").val(response
-                                .total);
-                            $("#jasa").val("Rp " + new Intl.NumberFormat('id-ID').format(jasa));
+
+                            $("#sparepart_display").val("Rp " + formattedPrice);
+                            $("#sparepart").val(response.total);
+
+                            let formattedAcc = new Intl.NumberFormat('id-ID').format(acc);
+                            $("#aksesoris_display").val("Rp " + formattedAcc);
+                            $("#aksesoris").val(acc);
                         } else {
                             console.warn("Total price is undefined in response:", response);
                             $("#sparepart_display").val("Rp 0");
                             $("#sparepart").val(0);
+                            $("#aksesoris_display").val("Rp 0");
+                            $("#aksesoris").val(0);
                         }
                     },
                     error: function(xhr, status, error) {
@@ -847,6 +876,7 @@
 
                 $("#payServiceModal").modal("show");
             });
+
         });
     </script>
 @endpush

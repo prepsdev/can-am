@@ -51,8 +51,16 @@ class ServiceController extends Controller
                 }
             })
             ->editColumn('price', function ($data) {
-                $total = ($data->jasa ?? 0) + ($data->sparepart ?? 0) + ($data->aksesoris ?? 0);
-                return 'Rp ' . number_format($total, 0, ',', '.');
+                if ($data->status == "Finished") {
+                    $details = ServiceDetails::where('service_id', $data->service_id)->get();
+                    $totalPrice = 0;
+                    foreach ($details as $detail) {
+                        $totalPrice += ($detail->jasa ?? 0) + ($detail->sparepart ?? 0) + ($detail->aksesoris ?? 0);
+                    }
+                    return 'Rp ' . number_format($totalPrice, 0, ',', '.');
+                } else {
+                    return "Not Finished Yet";
+                }
             })
             ->editColumn('time', function ($data) {
                 if ($data->status == "Finished") {

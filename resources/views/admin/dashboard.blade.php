@@ -8,10 +8,14 @@
                     <div class="card border-0 zoom-in bg-danger-subtle shadow-none">
                         <div class="card-body">
                             <div class="text-center">
-                                <img src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/svgs/icon-mailbox.svg"
-                                    width="50" height="50" class="mb-3" alt="modernize-img">
-                                <p class="fw-semibold fs-3 text-danger mb-1">Projects</p>
-                                <h5 class="fw-semibold text-danger mb-0">356</h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-exclamation-circle text-danger" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path
+                                        d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+                                </svg>
+                                <p class="fw-semibold fs-3 text-danger mb-1">Today Job</p>
+                                <h5 class="fw-semibold text-danger mb-0">{{ $totalToday }}</h5>
                             </div>
                         </div>
                     </div>
@@ -20,10 +24,13 @@
                     <div class="card border-0 zoom-in bg-warning-subtle shadow-none">
                         <div class="card-body">
                             <div class="text-center">
-                                <img src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/svgs/icon-mailbox.svg"
-                                    width="50" height="50" class="mb-3" alt="modernize-img">
-                                <p class="fw-semibold fs-3 text-warning mb-1">Projects</p>
-                                <h5 class="fw-semibold text-warning mb-0">356</h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-people text-warning" viewBox="0 0 16 16">
+                                    <path
+                                        d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4" />
+                                </svg>
+                                <p class="fw-semibold fs-3 text-warning mb-1">Total Customer</p>
+                                <h5 class="fw-semibold text-warning mb-0">{{ $totalCustomer }}</h5>
                             </div>
                         </div>
                     </div>
@@ -32,10 +39,14 @@
                     <div class="card border-0 zoom-in bg-info-subtle shadow-none">
                         <div class="card-body">
                             <div class="text-center">
-                                <img src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/svgs/icon-mailbox.svg"
-                                    width="50" height="50" class="mb-3" alt="modernize-img">
-                                <p class="fw-semibold fs-3 text-info mb-1">Projects</p>
-                                <h5 class="fw-semibold text-info mb-0">356</h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-cash text-info" viewBox="0 0 16 16">
+                                    <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4" />
+                                    <path
+                                        d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2z" />
+                                </svg>
+                                <p class="fw-semibold fs-3 text-info mb-1">Total Earned</p>
+                                <h5 class="fw-semibold text-info mb-0">Rp {{ number_format($totalEarn, 0, ',', '.') }}</h5>
                             </div>
                         </div>
                     </div>
@@ -44,10 +55,96 @@
                     <div class="card border-0 zoom-in bg-success-subtle shadow-none">
                         <div class="card-body">
                             <div class="text-center">
-                                <img src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/svgs/icon-mailbox.svg"
-                                    width="50" height="50" class="mb-3" alt="modernize-img">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-check-all text-success" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486z" />
+                                </svg>
                                 <p class="fw-semibold fs-3 text-success mb-1">Total Finished</p>
-                                <h5 class="fw-semibold text-success mb-0">123</h5>
+                                <h5 class="fw-semibold text-success mb-0">{{ $totalFinish }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-8">
+                    <div class="card">
+                        <div class="card-header border border-danger bg-danger">
+                            <h4 class="fw-semibold mb-0">Today's Service Queue</h4>
+                        </div>
+                        <div class="card-body border border-danger shadow-lg">
+                            <div class="table-responsive mb-4 border rounded-1">
+                                <table class="table text-nowrap mb-0 align-middle">
+                                    <thead class="text-dark fs-4">
+                                        <tr>
+                                            <th class="fw-4 fw-semibold- mb-0">No</th>
+                                            <th class="fw-4 fw-semibold- mb-0">Pelanggan</th>
+                                            <th class="fw-4 fw-semibold- mb-0">Alamat</th>
+                                            <th class="fw-4 fw-semibold- mb-0">Status</th>
+                                            <th class="fw-4 fw-semibold- mb-0">Action</th>
+                                        </tr>
+                                        @foreach ($dataAdmin as $row)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $row->customer->name }}</td>
+                                                <td>{{ $row->customer->city }}</td>
+                                                <td>
+                                                    @if ($row->status == 'Mechanic Unassigned')
+                                                        <span class="badge bg-danger">{{ $row->status }}</span>
+                                                    @elseif ($row->status == 'Waiting Mechanic')
+                                                        <span class="badge bg-warning">{{ $row->status }}</span>
+                                                    @else
+                                                        <span class="badge bg-info">{{ $row->status }}</span>
+                                                    @endif
+                                                </td>
+                                                <td><a href="{{ route('admin.service.detail', $row->service_id) }}"
+                                                        class="btn btn-sm btn-primary">Detail</a></td>
+                                            </tr>
+                                        @endforeach
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header border border-info bg-info">
+                                    <h4 class="fw-semibold mb-0">Most Purchased</h4>
+                                </div>
+                                <div class="card-body border border-info shadow-lg">
+                                    {{-- <div class="row align-items-center">
+                                        <div class="col-8">
+                                            <h4 class="fw-semibold mb-3">$36,358</h4>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <span
+                                                    class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-arrow-up-left text-success"></i>
+                                                </span>
+                                                <p class="text-dark me-1 fs-3 mb-0">+9%</p>
+                                                <p class="fs-3 mb-0">last year</p>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-4">
+                                                    <span
+                                                        class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
+                                                    <span class="fs-2">2023</span>
+                                                </div>
+                                                <div>
+                                                    <span
+                                                        class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
+                                                    <span class="fs-2">2023</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="d-flex justify-content-center">
+                                                <div id="breakup"></div>
+                                            </div>
+                                        </div>
+                                    </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -123,7 +220,7 @@
                                             <th class="fw-4 fw-semibold- mb-0">Status</th>
                                             <th class="fw-4 fw-semibold- mb-0">Action</th>
                                         </tr>
-                                        @foreach ($data as $row)
+                                        @foreach ($dataMechanic as $row)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $row->customer->name }}</td>
@@ -149,4 +246,7 @@
         <script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
         <script src="{{ asset('libs/simplebar/dist/simplebar.js') }}"></script>
         <script src="{{ asset('js/dashboard.js') }}"></script>
+        <script>
+            var graphData = @json($graphData);
+        </script>
     @endpush

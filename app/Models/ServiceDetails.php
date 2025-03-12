@@ -45,7 +45,7 @@ class ServiceDetails extends Model
 
     public function service()
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(Service::class, 'service_id', 'service_id');
     }
 
     public function customer()
@@ -56,6 +56,11 @@ class ServiceDetails extends Model
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
+    }
+
+    public function accessories()
+    {
+        return $this->hasMany(ServiceDetailAccecories::class, 'service_detail_id');
     }
 
     public function oliMesin()
