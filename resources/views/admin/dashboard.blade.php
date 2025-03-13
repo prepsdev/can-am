@@ -92,6 +92,8 @@
                                                         <span class="badge bg-danger">{{ $row->status }}</span>
                                                     @elseif ($row->status == 'Waiting Mechanic')
                                                         <span class="badge bg-warning">{{ $row->status }}</span>
+                                                    @elseif ($row->status == 'Finished')
+                                                        <span class="badge bg-success">{{ $row->status }}</span>
                                                     @else
                                                         <span class="badge bg-info">{{ $row->status }}</span>
                                                     @endif
@@ -114,27 +116,33 @@
                                     <h4 class="fw-semibold mb-0">Most Purchased</h4>
                                 </div>
                                 <div class="card-body border border-info shadow-lg">
-                                    {{-- <div class="row align-items-center">
+                                    <div class="row align-items-center">
                                         <div class="col-8">
-                                            <h4 class="fw-semibold mb-3">$36,358</h4>
-                                            <div class="d-flex align-items-center mb-3">
-                                                <span
-                                                    class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
-                                                    <i class="ti ti-arrow-up-left text-success"></i>
-                                                </span>
-                                                <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                                                <p class="fs-3 mb-0">last year</p>
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-4">
+                                                    <span class="round-8"
+                                                        style="background-color: #FFB347; border-radius: 50%; width: 8px; height: 8px; display: inline-block; margin-right: 8px;"></span>
+                                                    <span class="fs-2">{{ $graphCollection[0]['name'] ?? 'Unknown' }}
+                                                        ({{ $graphCollection[0]['value'] ?? 0 }} Items)
+                                                    </span>
+                                                </div>
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <div class="me-4">
-                                                    <span
-                                                        class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                                                    <span class="fs-2">2023</span>
+                                                    <span class="round-8"
+                                                        style="background-color: #AEC6CF; border-radius: 50%; width: 8px; height: 8px; display: inline-block; margin-right: 8px;"></span>
+                                                    <span class="fs-2">{{ $graphCollection[1]['name'] ?? 'Unknown' }}
+                                                        ({{ $graphCollection[1]['value'] ?? 0 }} Items)
+                                                    </span>
                                                 </div>
-                                                <div>
-                                                    <span
-                                                        class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
-                                                    <span class="fs-2">2023</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-4">
+                                                    <span class="round-8"
+                                                        style="background-color: #FF6961; border-radius: 50%; width: 8px; height: 8px; display: inline-block; margin-right: 8px;"></span>
+                                                    <span class="fs-2">{{ $graphCollection[2]['name'] ?? 'Unknown' }}
+                                                        ({{ $graphCollection[2]['value'] ?? 0 }} Items)
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -143,7 +151,7 @@
                                                 <div id="breakup"></div>
                                             </div>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -245,8 +253,57 @@
     @push('scripts')
         <script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
         <script src="{{ asset('libs/simplebar/dist/simplebar.js') }}"></script>
-        <script src="{{ asset('js/dashboard.js') }}"></script>
         <script>
-            var graphData = @json($graphData);
+            var graphCollection = @json($graphCollection);
+
+            var labels = graphCollection.map(item => item.name);
+            var series = graphCollection.map(item => item.value);
+
+            var breakup = {
+                color: "#adb5bd",
+                series: series, // Data dari Laravel
+                labels: labels, // Label dari Laravel
+                chart: {
+                    width: 180,
+                    type: "donut",
+                    fontFamily: "Plus Jakarta Sans', sans-serif",
+                    foreColor: "#adb0bb",
+                },
+                plotOptions: {
+                    pie: {
+                        startAngle: 0,
+                        endAngle: 360,
+                        donut: {
+                            size: '75%',
+                        },
+                    },
+                },
+                stroke: {
+                    show: false,
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    show: false,
+                },
+                colors: ["#FFB347", "#AEC6CF", "#FF6961"],
+                responsive: [{
+                    breakpoint: 991,
+                    options: {
+                        chart: {
+                            width: 150,
+                        },
+                    },
+                }, ],
+                tooltip: {
+                    theme: "dark",
+                    fillSeriesColor: false,
+                },
+            };
+
+            // Render Chart
+            var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
+            chart.render();
         </script>
     @endpush
