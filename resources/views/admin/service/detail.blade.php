@@ -438,7 +438,7 @@
                                         <td>{{ $row->vehicle->vin ?? 'N/A' }}</td>
                                         <td>{{ $row->vehicle->type ?? 'N/A' }}</td>
                                         <td>Rp {{ number_format($row->total_sparepart, 0, ',', '.') }}</td>
-                                        <td>Rp {{ number_format($row->jasa, 0, ',', '.') }}</td>
+                                        <td>Rp {{ number_format($row->jasa ?? 0, 0, ',', '.') }}</td>
                                         @php
                                             $total_accessories = 0;
                                         @endphp

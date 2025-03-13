@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -55,6 +56,13 @@ class MechanicController extends Controller
     public function destroy($id)
     {
         $data = User::findOrFail($id);
+
+        $serviceCount = Service::where('mechanic_id', $id)->count();
+
+        if ($serviceCount > 0) {
+            return response()->json(['error' => 'This mechanic is associated with services and cannot be deleted.'], 400);
+        }
+
         $data->delete();
 
         return response()->json(['success' => 'Data deleted successfully.']);

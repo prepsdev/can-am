@@ -115,8 +115,14 @@
                                     "success");
                                 table.ajax.reload();
                             },
-                            error: function() {
-                                Swal.fire("Error!", "Something went wrong.", "error");
+                            error: function(xhr) {
+                                let errorMessage = "Something went wrong.";
+
+                                if (xhr.responseJSON && xhr.responseJSON.error) {
+                                    errorMessage = xhr.responseJSON.error;
+                                }
+
+                                Swal.fire("Error!", errorMessage, "error");
                             }
                         });
                     }
