@@ -109,10 +109,10 @@ $(function () {
   // Breakup
   // =====================================
   // Ambil data dari Laravel yang sudah diparsing
-var labels = graphData.map(item => item.name);
-var series = graphData.map(item => item.value);
+  var labels = graphCollection.map(item => item.name);
+  var series = graphCollection.map(item => item.value);
 
-var breakup = {
+  var breakup = {
     color: "#adb5bd",
     series: series, // Data dari Laravel
     labels: labels, // Label dari Laravel
@@ -156,11 +156,11 @@ var breakup = {
       theme: "dark",
       fillSeriesColor: false,
     },
-};
+  };
 
-// Render Chart
-var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
-chart.render();
+  // Render Chart
+  var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
+  chart.render();
 
 
 

@@ -13,11 +13,9 @@ class DashboardController extends Controller
     public function index()
     {
         $dataMechanic = Service::where('mechanic_id', auth()->id())
-            ->where('status', '!=', 'Finished')
             ->whereDate('schedule_date', date('Y-m-d'))
             ->get();
-        $dataAdmin = Service::where('status', '!=', 'Finished')
-            ->whereDate('schedule_date', date('Y-m-d'))
+        $dataAdmin = Service::whereDate('schedule_date', date('Y-m-d'))
             ->get();
 
         $totalCustomer = Customer::count();
@@ -28,79 +26,51 @@ class DashboardController extends Controller
         $totalEarn = ServiceDetails::whereHas('service', function ($query) {
             $query->where('status', 'Finished');
         })->sum(DB::raw('jasa + sparepart + aksesoris'));
-        $graphData = ServiceDetails::select(
-            'oli_mesin',
-            'oli_gardan',
-            'oli_gear_box',
-            'break_cleaner',
-            'carbu_cleaner',
-            'crush_washer',
-            'busi',
-            'o_ring_filter',
-            'filter_oli'
-        )
-            ->with([
-                'oliMesin:id,name',
-                'oliGardan:id,name',
-                'oliGearBox:id,name',
-                'breakCleaner:id,name',
-                'carbuCleaner:id,name',
-                'crushWasher:id,name',
-                'Busi:id,name',
-                'oRingFilter:id,name',
-                'filterOli:id,name'
-            ])
-            ->get()
-            ->flatMap(function ($item) {
-                return [
-                    'oli_mesin' => $item->oli_mesin,
-                    'oli_gardan' => $item->oli_gardan,
-                    'oli_gear_box' => $item->oli_gear_box,
-                    'break_cleaner' => $item->break_cleaner,
-                    'carbu_cleaner' => $item->carbu_cleaner,
-                    'crush_washer' => $item->crush_washer,
-                    'busi' => $item->busi,
-                    'o_ring_filter' => $item->o_ring_filter,
-                    'filter_oli' => $item->filter_oli,
-                ];
-            })
-            ->sortByDesc(function ($value) {
-                return $value;
-            })
-            ->take(2)
-            ->map(function ($value, $key) {
-                // Ambil model terkait
-                $service = ServiceDetails::with([
-                    'oliMesin:id,name',
-                    'oliGardan:id,name',
-                    'oliGearBox:id,name',
-                    'breakCleaner:id,name',
-                    'carbuCleaner:id,name',
-                    'crushWasher:id,name',
-                    'Busi:id,name',
-                    'oRingFilter:id,name',
-                    'filterOli:id,name'
-                ])->first();
+        $graphData = ServiceDetails::with([
+            'oliMesin:id,name',
+            'oliGardan:id,name',
+            'oliGearBox:id,name',
+            'breakCleaner:id,name',
+            'carbuCleaner:id,name',
+            'crushWasher:id,name',
+            'Busi:id,name',
+            'oRingFilter:id,name',
+            'filterOli:id,name'
+        ])->get();
 
-                $relationMap = [
-                    'oli_mesin' => $service->oliMesin,
-                    'oli_gardan' => $service->oliGardan,
-                    'oli_gear_box' => $service->oliGearBox,
-                    'break_cleaner' => $service->breakCleaner,
-                    'carbu_cleaner' => $service->carbuCleaner,
-                    'crush_washer' => $service->crushWasher,
-                    'busi' => $service->Busi,
-                    'o_ring_filter' => $service->oRingFilter,
-                    'filter_oli' => $service->filterOli,
-                ];
+        $relationMap = [
+            'oli_mesin' => 'oliMesin',
+            'oli_gardan' => 'oliGardan',
+            'oli_gear_box' => 'oliGearBox',
+            'break_cleaner' => 'breakCleaner',
+            'carbu_cleaner' => 'carbuCleaner',
+            'crush_washer' => 'crushWasher',
+            'busi' => 'Busi',
+            'o_ring_filter' => 'oRingFilter',
+            'filter_oli' => 'filterOli',
+        ];
+
+        $graphCollection = collect([]);
+
+        foreach ($relationMap as $column => $relation) {
+            $grouped = $graphData->groupBy($column)->map(function ($items, $productId) use ($relation) {
+                if (empty($productId)) {
+                    return null; // Abaikan jika product_id kosong
+                }
+
+                $total = $items->count();
+                $productName = optional($items->first()->{$relation})->name;
 
                 return [
-                    'name' => optional($relationMap[$key])->name,
-                    'value' => $value
+                    'name' => $productName,
+                    'value' => $total
                 ];
-            });
+            })->filter();
+
+            $graphCollection = $graphCollection->merge($grouped);
+        }
 
 
-        return view('admin.dashboard', compact('dataAdmin', 'dataMechanic', 'totalCustomer', 'totalFinish', 'totalToday', 'totalEarn', 'graphData'));
+        return view('admin.dashboard', compact('dataAdmin', 'dataMechanic', 'totalCustomer', 'totalFinish', 'totalToday', 'totalEarn', 'graphCollection'));
     }
 }
